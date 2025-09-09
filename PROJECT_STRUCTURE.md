@@ -1,0 +1,46 @@
+# Project Structure
+
+```
+app/
+  main.py
+  config.py
+  db.py
+  models.py
+  schemas.py
+  repositories.py
+  utils/
+    chunking.py
+    logging.py
+  services/
+    embeddings.py
+    qdrant_service.py
+    rag_pipeline.py
+  routers/
+    health.py
+    documents.py
+    chat.py
+    threads.py
+    feedback.py
+    search_fallback.py
+  workers/
+    queue.py
+    jobs.py
+    worker.py
+ui/
+  streamlit_app.py
+eval/
+  evaluate_rag.py
+tests/
+  test_ingestion.py
+  test_chat.py
+docker-compose.yml
+backend.Dockerfile
+worker.Dockerfile
+ui.Dockerfile
+requirements.txt
+API-SPECIFICATION.yml
+POSTMAN_COLLECTION.json
+WORKFLOW_DESIGN.md
+CHAT_HISTORY.md
+.env.example
+```

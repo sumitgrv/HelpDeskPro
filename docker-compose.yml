@@ -1,0 +1,49 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: helpdeskpro
+    ports: ["5432:5432"]
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports: ["6333:6333"]
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+  redis:
+    image: redis:7
+    ports: ["6379:6379"]
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend.Dockerfile
+    env_file: .env
+    depends_on: [db, qdrant, redis]
+    ports: ["8000:8000"]
+    volumes:
+      - ./uploads:/app/uploads
+
+  worker:
+    build:
+      context: .
+      dockerfile: worker.Dockerfile
+    env_file: .env
+    depends_on: [backend, redis, qdrant, db]
+
+  ui:
+    build:
+      context: .
+      dockerfile: ui.Dockerfile
+    env_file: .env
+    depends_on: [backend]
+    ports: ["8501:8501"]
+
+volumes:
+  db_data:
+  qdrant_data:

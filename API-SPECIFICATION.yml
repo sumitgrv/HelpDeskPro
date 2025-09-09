@@ -1,0 +1,84 @@
+openapi: "3.0.3"
+info:
+  title: HelpDeskPro RAG API
+  version: "1.0.0"
+servers:
+  - url: http://localhost:8000
+paths:
+  /v1/documents:
+    post:
+      summary: Upload a document
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                owner_id:
+                  type: string
+      responses:
+        "201":
+          description: Document accepted
+    get:
+      summary: List documents
+      responses:
+        "200":
+          description: OK
+  /v1/documents/{doc_id}:
+    get:
+      summary: Get document by id
+      parameters:
+        - in: path
+          name: doc_id
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: OK }
+  /v1/threads:
+    post:
+      summary: Create a new conversation thread
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title: { type: string }
+                user_id: { type: string }
+      responses:
+        "201": { description: Created }
+  /v1/chat/query:
+    post:
+      summary: Ask a question with optional thread
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                question: { type: string }
+                thread_id: { type: string }
+                top_k: { type: integer, default: 5 }
+      responses:
+        "200": { description: OK }
+  /v1/feedback:
+    post:
+      summary: Submit feedback for an answer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                answer_id: { type: string }
+                rating: { type: string, enum: [HELPFUL, NOT_HELPFUL] }
+                notes: { type: string }
+      responses:
+        "201": { description: Created }

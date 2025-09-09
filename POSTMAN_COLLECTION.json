@@ -1,0 +1,82 @@
+{
+  "info": {
+    "name": "HelpDeskPro RAG API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Upload Document",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": ""
+            },
+            {
+              "key": "owner_id",
+              "value": "demo-user",
+              "type": "text"
+            }
+          ]
+        },
+        "url": "{{baseUrl}}/v1/documents"
+      }
+    },
+    {
+      "name": "Create Thread",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"title\": \"Demo Thread\", \"user_id\": \"demo-user\"}"
+        },
+        "url": "{{baseUrl}}/v1/threads"
+      }
+    },
+    {
+      "name": "Ask Question",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"question\": \"What is the refund policy?\", \"thread_id\": \"\"}"
+        },
+        "url": "{{baseUrl}}/v1/chat/query"
+      }
+    },
+    {
+      "name": "Submit Feedback",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"answer_id\": \"\", \"rating\": \"HELPFUL\", \"notes\": \"nice answer\"}"
+        },
+        "url": "{{baseUrl}}/v1/feedback"
+      }
+    }
+  ]
+}
