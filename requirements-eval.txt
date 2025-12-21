@@ -1,0 +1,4 @@
+# Evaluation dependencies (for eval/evaluate_rag.py)
+-r requirements.txt
+ragas==0.1.9
+
