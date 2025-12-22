@@ -68,7 +68,7 @@ class Citation(Base):
     id: Mapped[str] = mapped_column(String, primary_key=True)
     answer_id: Mapped[str] = mapped_column(String, ForeignKey("answers.id"))
     document_id: Mapped[str] = mapped_column(String, ForeignKey("documents.id"))
-    chunk_id: Mapped[str] = mapped_column(String, ForeignKey("chunks.id"))
+    chunk_id: Mapped[str | None] = mapped_column(String, ForeignKey("chunks.id"), nullable=True)  # Nullable since chunks may not be in DB
     score: Mapped[float] = mapped_column(Float, default=0.0)
 
 class FeedbackRating(str, enum.Enum):

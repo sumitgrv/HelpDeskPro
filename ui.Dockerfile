@@ -1,8 +1,9 @@
 FROM python:3.11-slim
 
 WORKDIR /app
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# UI only needs streamlit, requests, and python-dotenv (not the full backend dependencies)
+COPY requirements-ui.txt .
+RUN pip install --no-cache-dir -r requirements-ui.txt
 
 COPY ui ./ui
 COPY .env.example ./.env

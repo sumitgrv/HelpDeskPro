@@ -1,5 +1,6 @@
 import uuid
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 from . import models
 
 def new_id() -> str:
@@ -32,9 +33,37 @@ def create_answer(db: Session, thread_id: str, question: str, answer: str):
     db.add(a); db.commit(); db.refresh(a)
     return a
 
-def add_citation(db: Session, answer_id: str, document_id: str, chunk_id: str, score: float):
-    c = models.Citation(id=new_id(), answer_id=answer_id, document_id=document_id, chunk_id=chunk_id, score=score)
-    db.add(c); db.commit(); db.refresh(c)
+def add_citation(db: Session, answer_id: str, document_id: str, chunk_id: str | None, score: float):
+    # chunk_id may be None if chunks aren't stored in PostgreSQL
+    # When chunks are stored only in Qdrant, we pass None for chunk_id
+    c = models.Citation(
+        id=new_id(), 
+        answer_id=answer_id, 
+        document_id=document_id, 
+        chunk_id=chunk_id,  # Can be None
+        score=score
+    )
+    try:
+        db.add(c)
+        db.commit()
+        db.refresh(c)
+    except IntegrityError as e:
+        db.rollback()
+        # If foreign key constraint fails (chunk_id doesn't exist), retry without chunk_id
+        # This handles cases where the database schema hasn't been updated yet
+        if chunk_id and "chunk_id" in str(e.orig):
+            c = models.Citation(
+                id=new_id(), 
+                answer_id=answer_id, 
+                document_id=document_id, 
+                chunk_id=None,  # Retry without chunk_id
+                score=score
+            )
+            db.add(c)
+            db.commit()
+            db.refresh(c)
+        else:
+            raise e
     return c
 
 def add_feedback(db: Session, answer_id: str, rating: str, notes: str | None):

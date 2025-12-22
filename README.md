@@ -100,7 +100,7 @@ docker compose down
    ```bash
    # Copy the example file
    # On Linux/Mac:
-   cp .env.example .env
+cp .env.example .env
    
    # On Windows:
    Copy-Item .env.example .env
