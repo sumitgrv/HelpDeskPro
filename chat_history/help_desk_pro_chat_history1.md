@@ -66,9 +66,6 @@ Additionally, it should support document ingestion pipelines, background jobs (e
 
 3. Deliverables 
 
-Your submission will be a single private GitHub repository containing: 
-
-Share repo with user - sumansaurav-aiml 
 
     Source Code: Complete, working backend (Python only) + simple UI demo (Streamlit). 
 
