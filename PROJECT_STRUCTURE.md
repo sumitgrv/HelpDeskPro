@@ -41,6 +41,8 @@ requirements.txt
 API-SPECIFICATION.yml
 POSTMAN_COLLECTION.json
 WORKFLOW_DESIGN.md
-CHAT_HISTORY.md
+chat_history/
+  cursor_helpdeskpro_project_requirements.md
+  help_desk_pro_chat_history2.md
 .env.example
 ```
